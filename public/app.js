@@ -1,5 +1,6 @@
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
-
+audio=true;
+video=true;
 const configuration = {
   iceServers: [
     {
@@ -23,7 +24,67 @@ function init() {
   document.querySelector('#hangupBtn').addEventListener('click', hangUp);
   document.querySelector('#createBtn').addEventListener('click', createRoom);
   document.querySelector('#joinBtn').addEventListener('click', joinRoom);
+  document.querySelector('#toggleMuteBtn').addEventListener('click', muteVideo);
+  document.querySelector('#toggleCameraBtn').addEventListener('click', toggleCameraOn);
+  
   roomDialog = new mdc.dialog.MDCDialog(document.querySelector('#room-dialog'));
+}
+
+async function muteVideo(e){
+  const tracks = document.querySelector('#localVideo').srcObject.getTracks();
+  tracks.stop;
+  let tracksLen =1;
+  tracks.forEach(track => {
+    track.stop();
+    console.log(`stopping track ${tracksLen}`);
+    tracksLen++;
+  });
+  localStream.stop;
+  document.querySelector('#localVideo').srcObject = null;
+  console.log(`video was ${video} `);
+  audio=!audio;
+  const stream = await navigator.mediaDevices.getUserMedia( 
+    {video: video, audio: audio});
+    // stream.
+    console.log(`video is ${video} `);
+    
+    // document.querySelector('#toggleMuteBtn').disabled = audio;
+document.querySelector('#localVideo').srcObject = stream;
+localStream = stream;
+remoteStream = new MediaStream();
+document.querySelector('#remoteVideo').srcObject = remoteStream;
+
+
+}
+
+
+
+async function toggleCameraOn(e){
+  const tracks = document.querySelector('#localVideo').srcObject.getTracks();
+  tracks.stop;
+  let tracksLen =1;
+  tracks.forEach(track => {
+    track.stop();
+    console.log(`stopping track ${tracksLen}`);
+    tracksLen++;
+  });
+  localStream.stop;
+  document.querySelector('#localVideo').srcObject = null;
+  console.log(`video was ${video} `);
+  video=!video;
+  const stream = await navigator.mediaDevices.getUserMedia( 
+    {video: video, audio: audio});
+    // stream.
+    console.log(`video is ${video} `);
+    
+
+document.querySelector('#localVideo').srcObject = stream;
+localStream = stream;
+// document.querySelector('#toggleCameraBtn').disabled = video;
+remoteStream = new MediaStream();
+document.querySelector('#remoteVideo').srcObject = remoteStream;
+
+
 }
 
 async function createRoom() {
@@ -185,8 +246,12 @@ async function joinRoomById(roomId) {
 }
 
 async function openUserMedia(e) {
+  console.log("here tadaaa heyyy");
+  // localStream.stop;
   const stream = await navigator.mediaDevices.getUserMedia(
-      {video: true, audio: true});
+      {video: video, audio: audio});
+      
+      
   document.querySelector('#localVideo').srcObject = stream;
   localStream = stream;
   remoteStream = new MediaStream();
@@ -194,6 +259,7 @@ async function openUserMedia(e) {
 
   console.log('Stream:', document.querySelector('#localVideo').srcObject);
   document.querySelector('#cameraBtn').disabled = true;
+
   document.querySelector('#joinBtn').disabled = false;
   document.querySelector('#createBtn').disabled = false;
   document.querySelector('#hangupBtn').disabled = false;
