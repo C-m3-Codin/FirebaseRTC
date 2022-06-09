@@ -51,7 +51,7 @@ async function muteVideo(e){
     // document.querySelector('#toggleMuteBtn').disabled = audio;
 document.querySelector('#localVideo').srcObject = stream;
 localStream = stream;
-remoteStream = new MediaStream();
+// remoteStream = new MediaStream();
 document.querySelector('#remoteVideo').srcObject = remoteStream;
 
 
@@ -81,7 +81,7 @@ async function toggleCameraOn(e){
 document.querySelector('#localVideo').srcObject = stream;
 localStream = stream;
 // document.querySelector('#toggleCameraBtn').disabled = video;
-remoteStream = new MediaStream();
+// remoteStream = new MediaStream();
 document.querySelector('#remoteVideo').srcObject = remoteStream;
 
 
